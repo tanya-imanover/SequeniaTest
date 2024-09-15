@@ -16,12 +16,8 @@ import kotlinx.coroutines.launch
 class FilmListViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean>
+    val isLoading: LiveData<Boolean>
         get() = _isLoading
-
-//    private val _genreSelected = MutableLiveData<Genre>()
-//    val genreSelected: LiveData<Genre>
-//        get() = _genreSelected
 
     private val repository = FilmRepositoryImpl
     private val getFilmListUseCase = GetFilmListUseCase(repository)
@@ -33,21 +29,22 @@ class FilmListViewModel : ViewModel() {
     val filmList = getFilmListUseCase()
     val genres = getGenresUseCase()
 
-    init{
+    init {
         viewModelScope.launch {
+            _isLoading.value = true
             loadDataUseCase()
+        }.invokeOnCompletion {
+            _isLoading.value = false
         }
     }
 
-    fun genreSelected(genre: Genre){
-        if(genre.selected) {
+    fun genreSelected(genre: Genre) {
+        if (genre.selected) {
             genreSelectedUseCase(genre)
         } else {
             genreDeselectedUseCase()
         }
     }
-
-
 
 
 }

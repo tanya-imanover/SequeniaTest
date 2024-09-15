@@ -57,7 +57,6 @@ object FilmRepositoryImpl : FilmRepository{
     override suspend fun loadFilms() {
         try {
             val filmsDto = retrofit.loadMovies()
-            Log.d("FilmRepositoryImpl", filmsDto.toString())
             filmList = filmMapper
                 .filmListDtoToFilmListEntity(filmsDto)
                 .sortedBy { it.localizedName }

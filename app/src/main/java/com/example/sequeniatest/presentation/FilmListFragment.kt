@@ -44,21 +44,25 @@ class FilmListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvFilmList.layoutManager = GridLayoutManager(this.context, 2)
         observeViewModel()
+        setOnFilmClickListener()
+        setOnGenreClickListener()
     }
 
     private fun observeViewModel() {
         viewModel.genres.observe(viewLifecycleOwner) {
             binding.rvGenreList.adapter = genresAdapter
             genresAdapter.submitList(it)
-            binding.progressBar.visibility = View.GONE
-            setOnGenreClickListener()
         }
         viewModel.filmList.observe(viewLifecycleOwner) {
             binding.rvFilmList.adapter = filmsAdapter
-            binding.progressBar.visibility = View.GONE
             filmsAdapter.submitList(it)
-            setOnFilmClickListener()
-
+        }
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 
@@ -81,7 +85,6 @@ class FilmListFragment : Fragment() {
     }
 
     companion object {
-
         fun newInstance() = FilmListFragment()
     }
 }

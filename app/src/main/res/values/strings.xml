@@ -6,4 +6,5 @@
     <string name="genres_title">Жанры</string>
     <string name="films_title">Фильмы</string>
     <string name="get_film_error">Не удалось найти информацию о фильме</string>
+    <string name="string_rating_source">Кинопоиск</string>
 </resources>
