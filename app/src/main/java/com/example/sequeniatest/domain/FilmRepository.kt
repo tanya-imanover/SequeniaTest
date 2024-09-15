@@ -12,5 +12,9 @@ interface FilmRepository {
 
     fun getFilm(id: Int): Film
 
+    fun genreSelected(genre: Genre)
+
+    fun genreDeselected()
+
     suspend fun  loadFilms()
 }

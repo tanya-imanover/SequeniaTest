@@ -74,7 +74,10 @@ class FilmListFragment : Fragment() {
     }
 
     private fun setOnGenreClickListener() {
-
+        genresAdapter.onShopItemClickListener = {
+            it.selected = !it.selected
+            viewModel.genreSelected(it)
+        }
     }
 
     companion object {

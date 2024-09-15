@@ -15,6 +15,8 @@ object FilmRepositoryImpl : FilmRepository{
     private val retrofit = ApiFactory.apiService
 
     private var filmList = listOf<Film>()
+    private var genres = listOf<Genre>()
+
     private val filmListLD = MutableLiveData<List<Film>>()
     private val genresLD = MutableLiveData<List<Genre>>()
 
@@ -40,13 +42,28 @@ object FilmRepositoryImpl : FilmRepository{
         } ?:throw RuntimeException("Element with id $id not found")
     }
 
+    override fun genreSelected(genre: Genre) {
+        genres.forEach { it.selected = it.genre == genre.genre }
+        genresLD.value = genres
+        getFilmListByGenre(genre.genre)
+    }
+
+    override fun genreDeselected() {
+        genres.forEach { it.selected = false }
+        genresLD.value = genres
+        filmListLD.value = filmList
+    }
+
     override suspend fun loadFilms() {
         try {
             val filmsDto = retrofit.loadMovies()
             Log.d("FilmRepositoryImpl", filmsDto.toString())
-            filmList = filmMapper.filmListDtoToFilmListEntity(filmsDto)
+            filmList = filmMapper
+                .filmListDtoToFilmListEntity(filmsDto)
+                .sortedBy { it.localizedName }
             filmListLD.value = filmList
-            genresLD.value = genresMapper.getGenresFromFilmList(filmList)
+            genres = genresMapper.getGenresFromFilmList(filmList)
+            genresLD.value = genres
         }catch (e: Exception){
             Log.d("FilmRepositoryImpl", e.message.toString())
         }
