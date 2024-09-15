@@ -4,8 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/tv_genre_item"
     android:textSize="16sp"
+    android:textColor="@color/black"
     tools:text="комедия"
     android:paddingVertical="10dp"
-    android:paddingHorizontal="16dp"
-    android:background="@color/yellow"/>
+    android:paddingHorizontal="16dp"/>
