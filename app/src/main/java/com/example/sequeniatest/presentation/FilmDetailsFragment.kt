@@ -60,24 +60,17 @@ class FilmDetailsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.filmList.observe(viewLifecycleOwner) {
-            try {
-                film = viewModel.getFilm(filmId)
-                binding.progressBar.visibility = View.GONE
-                binding.tvFilmNameTitle.text = film.localizedName
-                binding.tvRating.text = viewModel.getRatingString(film.rating ?: 0.0)
-                binding.tvGenreYear.text = viewModel.getYearGenresString(film)
-                binding.textViewDescription.text = film.description
+        film = viewModel.getFilm(filmId)
+        binding.progressBar.visibility = View.GONE
+        binding.tvFilmNameTitle.text = film.localizedName
+        binding.tvRating.text = viewModel.getRatingString(film.rating ?: 0.0)
+        binding.tvGenreYear.text = viewModel.getYearGenresString(film)
+        binding.textViewDescription.text = film.description
 
-                Glide.with(binding.main)
-                    .load(film.imageUrl)
-                    .placeholder(R.drawable.placeholder)
-                    .into(binding.ivFilmPoster)
-            } catch (e: Exception) {
-                //TODO
-
-            }
-        }
+        Glide.with(binding.main)
+            .load(film.imageUrl)
+            .placeholder(R.drawable.placeholder)
+            .into(binding.ivFilmPoster)
     }
 
     companion object {
