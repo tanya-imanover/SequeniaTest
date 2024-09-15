@@ -8,14 +8,15 @@ import com.example.sequeniatest.data.network.ApiFactory
 import com.example.sequeniatest.data.mapper.GenresMapper
 import com.example.sequeniatest.domain.Film
 import com.example.sequeniatest.domain.FilmRepository
+import com.example.sequeniatest.domain.Genre
 
-class FilmRepositoryImpl : FilmRepository{
+object FilmRepositoryImpl : FilmRepository{
 
     private val retrofit = ApiFactory.apiService
 
     private var filmList = listOf<Film>()
     private val filmListLD = MutableLiveData<List<Film>>()
-    private val genresLD = MutableLiveData<List<String>>()
+    private val genresLD = MutableLiveData<List<Genre>>()
 
     private val filmMapper = FilmMapper()
     private val genresMapper = GenresMapper()
@@ -29,12 +30,12 @@ class FilmRepositoryImpl : FilmRepository{
         return filmListLD
     }
 
-    override fun getGenres(): LiveData<List<String>> {
+    override fun getGenres(): LiveData<List<Genre>> {
         return genresLD
     }
 
     override fun getFilm(id: Int): Film {
-        return filmListLD.value?.find {
+        return  filmList.find {
             it.id == id
         } ?:throw RuntimeException("Element with id $id not found")
     }

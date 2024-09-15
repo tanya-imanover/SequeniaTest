@@ -9,7 +9,11 @@
     <style name="Theme.SequeniaTest" parent="Base.Theme.SequeniaTest" />
 
     <style name="ActionBarCustom" parent="Base.Widget.AppCompat.ActionBar">
+        <item name="titleCentered">true</item>
         <item name="android:background">@color/blue</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="elevation">4dp</item>
+
 
     </style>
 

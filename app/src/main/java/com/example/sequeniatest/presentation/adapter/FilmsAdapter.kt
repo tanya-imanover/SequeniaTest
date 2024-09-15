@@ -9,27 +9,32 @@ import com.example.sequeniatest.domain.Film
 
 class FilmsAdapter : ListAdapter<Film, FilmItemViewHolder>(FilmItemDiffCallback()) {
 
-    var onShopItemClickListener: ((Film) -> Unit)? = null
+    var onFilmItemClickListener: ((Film) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmItemViewHolder {
-        val layout =  R.layout.film_item
+        val layout = R.layout.film_item
+
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
+
         return FilmItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: FilmItemViewHolder, position: Int) {
         val filmItem = getItem(position)
-        filmItem?.imageUrl?.let {
-            Glide.with(holder.itemView)
-                .load(filmItem.imageUrl)
-                .into(holder.ivFilmPoster)
-        }
-        holder.tvFilmName.text = filmItem.name
+        Glide.with(holder.itemView)
+            .load(filmItem.imageUrl)
+            .placeholder(R.drawable.placeholder)
+            .centerCrop()
+            .into(holder.ivFilmPoster)
+
+
+        holder.tvFilmName.text = filmItem.localizedName
         holder.itemView.setOnClickListener {
-            onShopItemClickListener?.invoke(filmItem)
+            onFilmItemClickListener?.invoke(filmItem)
         }
 
     }
+
 }

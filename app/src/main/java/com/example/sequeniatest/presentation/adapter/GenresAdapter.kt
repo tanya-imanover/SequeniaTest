@@ -13,8 +13,8 @@ class GenresAdapter : ListAdapter<Genre, GenreItemViewHolder>(GenreItemDiffCallb
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreItemViewHolder {
         val layout = when (viewType) {
-            VIEW_TYPE_ENABLED -> R.layout.genge_selected_item
-            VIEW_TYPE_DISABLED -> R.layout.genge_item
+            VIEW_TYPE_ENABLED -> R.layout.genre_selected_item
+            VIEW_TYPE_DISABLED -> R.layout.genre_item
             else -> throw RuntimeException("Unknown view type $viewType")
         }
         val view = LayoutInflater

@@ -8,7 +8,7 @@ interface FilmRepository {
 
     fun getFilmListByGenre(genre: String): LiveData<List<Film>>
 
-    fun getGenres(): LiveData<List<String>>
+    fun getGenres(): LiveData<List<Genre>>
 
     fun getFilm(id: Int): Film
 
