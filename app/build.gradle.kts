@@ -73,4 +73,8 @@ dependencies {
     annotationProcessor("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
     implementation ("androidx.lifecycle:lifecycle-extensions:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version")
+    implementation ("io.insert-koin:koin-core:3.5.6")
+
+    // Koin Android features
+    implementation ("io.insert-koin:koin-android:3.5.6")
 }

@@ -13,9 +13,11 @@ import com.example.sequeniatest.databinding.FragmentFilmListBinding
 import com.example.sequeniatest.presentation.adapter.FilmsAdapter
 import com.example.sequeniatest.presentation.adapter.GenresAdapter
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FilmListFragment : Fragment() {
+
 
     private val binding: FragmentFilmListBinding by lazy {
         FragmentFilmListBinding.inflate(layoutInflater)
@@ -29,9 +31,7 @@ class FilmListFragment : Fragment() {
         FilmsAdapter()
     }
 
-    private val viewModel: FilmListViewModel by lazy {
-        ViewModelProvider(this)[FilmListViewModel::class.java]
-    }
+    private val viewModel: FilmListViewModel by viewModel<FilmListViewModel>()
 
 
     override fun onCreateView(
