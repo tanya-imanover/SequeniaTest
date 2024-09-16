@@ -5,12 +5,9 @@ import com.example.sequeniatest.data.repository.FilmRepositoryImpl
 import com.example.sequeniatest.domain.Film
 import com.example.sequeniatest.domain.GetFilmUseCase
 
-class FilmDetailsViewModel : ViewModel() {
-
-    private val repository = FilmRepositoryImpl
-
-    private val getFilmUseCase = GetFilmUseCase(repository)
-
+class FilmDetailsViewModel(
+    private val getFilmUseCase: GetFilmUseCase
+) : ViewModel() {
 
     fun getFilm(id: Int): Film {
         return getFilmUseCase(id)

@@ -13,26 +13,21 @@ import com.example.sequeniatest.databinding.FragmentFilmListBinding
 import com.example.sequeniatest.presentation.adapter.FilmsAdapter
 import com.example.sequeniatest.presentation.adapter.GenresAdapter
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class FilmListFragment : Fragment() {
+class FilmListFragment (): Fragment() {
 
     private val binding: FragmentFilmListBinding by lazy {
         FragmentFilmListBinding.inflate(layoutInflater)
     }
 
-    private val genresAdapter: GenresAdapter by lazy {
-        GenresAdapter()
-    }
+    private val genresAdapter: GenresAdapter by inject<GenresAdapter>()
 
-    private val filmsAdapter: FilmsAdapter by lazy {
-        FilmsAdapter()
-    }
+    private val filmsAdapter: FilmsAdapter by inject<FilmsAdapter>()
 
-    private val viewModel: FilmListViewModel by lazy {
-        ViewModelProvider(this)[FilmListViewModel::class.java]
-    }
-
+    private val viewModel: FilmListViewModel by viewModel<FilmListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,18 +40,19 @@ class FilmListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvFilmList.layoutManager = GridLayoutManager(this.context, 2)
+        setOnFilmClickListener()
+        setOnGenreClickListener()
         observeViewModel()
         (activity as MainActivity).setToolbarTitle(getString(R.string.films_title))
         (activity as MainActivity).setBackButtonVisibility(false)
-        setAdapters()
-        setOnFilmClickListener()
-        setOnGenreClickListener()
     }
 
     private fun observeViewModel() {
         viewModel.genres.observe(viewLifecycleOwner) {
+            setAdapters()
             genresAdapter.submitList(it)
             binding.tvGenresTitle.visibility = View.VISIBLE
+
         }
         viewModel.filmList.observe(viewLifecycleOwner) {
             filmsAdapter.submitList(it)

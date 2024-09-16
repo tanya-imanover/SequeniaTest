@@ -15,7 +15,13 @@ import com.example.sequeniatest.domain.LoadError
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class FilmListViewModel : ViewModel() {
+class FilmListViewModel (
+        private val getFilmListUseCase: GetFilmListUseCase,
+        private val getGenresUseCase: GetGenresUseCase,
+        private val genreSelectedUseCase: GenreSelectedUseCase,
+        private val genreDeselectedUseCase: GenreDeselectedUseCase,
+        private val loadDataUseCase: LoadDataUseCase
+): ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean>
@@ -25,12 +31,6 @@ class FilmListViewModel : ViewModel() {
     val error: LiveData<LoadError>
         get() = _error
 
-    private val repository = FilmRepositoryImpl
-    private val getFilmListUseCase = GetFilmListUseCase(repository)
-    private val getGenresUseCase = GetGenresUseCase(repository)
-    private val genreSelectedUseCase = GenreSelectedUseCase(repository)
-    private val genreDeselectedUseCase = GenreDeselectedUseCase(repository)
-    private val loadDataUseCase = LoadDataUseCase(repository)
 
     val filmList = getFilmListUseCase()
     val genres = getGenresUseCase()
@@ -45,6 +45,7 @@ class FilmListViewModel : ViewModel() {
             genreSelectedUseCase(genre)
         } else {
             genreDeselectedUseCase()
+
         }
     }
 

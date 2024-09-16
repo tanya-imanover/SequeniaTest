@@ -5,19 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import com.example.sequeniatest.data.mapper.FilmMapper
 import com.example.sequeniatest.data.mapper.GenresMapper
 import com.example.sequeniatest.data.network.ApiFactory
+import com.example.sequeniatest.data.network.ApiService
 import com.example.sequeniatest.domain.Film
 import com.example.sequeniatest.domain.FilmRepository
 import com.example.sequeniatest.domain.Genre
 
-object FilmRepositoryImpl : FilmRepository{
+class FilmRepositoryImpl (private val apiService: ApiService): FilmRepository{
 
-    private val retrofit = ApiFactory.apiService
-
-    private var filmList = listOf<Film>()
-    private var genres = listOf<Genre>()
-
-    private val filmListLD = MutableLiveData<List<Film>>()
-    private val genresLD = MutableLiveData<List<Genre>>()
+    private val _filmListLD = MutableLiveData<List<Film>>()
+    val filmListLD: LiveData<List<Film>>
+        get() = _filmListLD
+    private val _genresLD = MutableLiveData<List<Genre>>()
+    val genresLD: LiveData<List<Genre>>
+        get() = _genresLD
 
     private val filmMapper = FilmMapper()
     private val genresMapper = GenresMapper()
@@ -27,11 +27,12 @@ object FilmRepositoryImpl : FilmRepository{
     }
 
     override fun getFilmListByGenre(genre: String): LiveData<List<Film>> {
-        filmListLD.value = filmList.filter { it.genres?.contains(genre) ?: false }
+        _filmListLD.value = filmList.filter { it.genres?.contains(genre) ?: false }
         return filmListLD
     }
 
     override fun getGenres(): LiveData<List<Genre>> {
+
         return genresLD
     }
 
@@ -43,26 +44,31 @@ object FilmRepositoryImpl : FilmRepository{
 
     override fun genreSelected(genre: Genre) {
         genres.forEach { it.selected = it.genre == genre.genre }
-        genresLD.value = genres
+        _genresLD.value = genres
         getFilmListByGenre(genre.genre)
     }
 
     override fun genreDeselected() {
         genres.forEach { it.selected = false }
-        genresLD.value = genres
-        filmListLD.value = filmList
+        _genresLD.value = genres
+        _filmListLD.value = filmList
     }
 
     override suspend fun loadFilms() {
 
-            val filmsDto = retrofit.loadMovies()
+            val filmsDto = apiService.loadMovies()
             filmList = filmMapper
                 .filmListDtoToFilmListEntity(filmsDto)
                 .sortedBy { it.localizedName }
-            filmListLD.value = filmList
+            _filmListLD.value = filmList
             genres = genresMapper.getGenresFromFilmList(filmList)
-            genresLD.value = genres
+            _genresLD.value = genres
 
+    }
+
+    companion object{
+        private var filmList = listOf<Film>()
+        private var genres = listOf<Genre>()
     }
 
 
