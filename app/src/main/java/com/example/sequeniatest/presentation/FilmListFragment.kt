@@ -45,18 +45,19 @@ class FilmListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvFilmList.layoutManager = GridLayoutManager(this.context, 2)
+        setOnFilmClickListener()
+        setOnGenreClickListener()
         observeViewModel()
         (activity as MainActivity).setToolbarTitle(getString(R.string.films_title))
         (activity as MainActivity).setBackButtonVisibility(false)
-        setAdapters()
-        setOnFilmClickListener()
-        setOnGenreClickListener()
     }
 
     private fun observeViewModel() {
         viewModel.genres.observe(viewLifecycleOwner) {
+            setAdapters()
             genresAdapter.submitList(it)
             binding.tvGenresTitle.visibility = View.VISIBLE
+
         }
         viewModel.filmList.observe(viewLifecycleOwner) {
             filmsAdapter.submitList(it)
