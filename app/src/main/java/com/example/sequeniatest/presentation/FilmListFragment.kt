@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,6 +12,7 @@ import com.example.sequeniatest.R
 import com.example.sequeniatest.databinding.FragmentFilmListBinding
 import com.example.sequeniatest.presentation.adapter.FilmsAdapter
 import com.example.sequeniatest.presentation.adapter.GenresAdapter
+import com.google.android.material.snackbar.Snackbar
 
 
 class FilmListFragment : Fragment() {
@@ -44,25 +46,58 @@ class FilmListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvFilmList.layoutManager = GridLayoutManager(this.context, 2)
         observeViewModel()
+        (activity as MainActivity).setToolbarTitle(getString(R.string.films_title))
+        (activity as MainActivity).setBackButtonVisibility(false)
+        setAdapters()
         setOnFilmClickListener()
         setOnGenreClickListener()
     }
 
     private fun observeViewModel() {
         viewModel.genres.observe(viewLifecycleOwner) {
-            binding.rvGenreList.adapter = genresAdapter
             genresAdapter.submitList(it)
+            binding.tvGenresTitle.visibility = View.VISIBLE
         }
         viewModel.filmList.observe(viewLifecycleOwner) {
-            binding.rvFilmList.adapter = filmsAdapter
             filmsAdapter.submitList(it)
+            binding.tvFilmsTitle.visibility = View.VISIBLE
         }
         viewModel.isLoading.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.progressBar.visibility = View.VISIBLE
-            } else {
-                binding.progressBar.visibility = View.GONE
+            setLoadingViewsVisibility(it)
+        }
+        viewModel.error.observe(viewLifecycleOwner) {
+            if (it.isError) {
+                showToast()
             }
+        }
+    }
+
+    private fun setLoadingViewsVisibility(isLoading: Boolean) {
+        if (isLoading) {
+            binding.tvFilmsTitle.visibility = View.GONE
+            binding.tvGenresTitle.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun setAdapters() {
+        binding.rvGenreList.adapter = genresAdapter
+        binding.rvFilmList.adapter = filmsAdapter
+    }
+
+    private fun showToast() {
+        val snackBar =
+            Snackbar.make(binding.root, R.string.string_network_error, Snackbar.LENGTH_LONG)
+        snackBar.apply {
+            setActionTextColor(ContextCompat.getColor(context, R.color.yellow))
+            setBackgroundTint(ContextCompat.getColor(context, R.color.gray))
+            setTextColor(ContextCompat.getColor(context, R.color.white))
+            setAction(R.string.string_try_again) {
+                viewModel.loadData()
+            }
+            show()
         }
     }
 

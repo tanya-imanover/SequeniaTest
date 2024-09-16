@@ -22,7 +22,6 @@ class FilmDetailsFragment : Fragment() {
         ViewModelProvider(this)[FilmDetailsViewModel::class.java]
     }
 
-    // TODO: Rename and change types of parameters
     private var filmId: Int = ID_ERROR
     private lateinit var film: Film
 
@@ -35,14 +34,14 @@ class FilmDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-
+        (activity as MainActivity).setBackButtonVisibility(true)
+        (activity as MainActivity).setToolbarTitle(film.name?: EMPTY_STRING)
 
     }
 
@@ -76,6 +75,7 @@ class FilmDetailsFragment : Fragment() {
     companion object {
         private const val FILM_ID = "film_id"
         private const val ID_ERROR = -1
+        private const val EMPTY_STRING = ""
 
         @JvmStatic
         fun newInstance(filmId: Int) =

@@ -1,11 +1,10 @@
 package com.example.sequeniatest.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.sequeniatest.data.mapper.FilmMapper
-import com.example.sequeniatest.data.network.ApiFactory
 import com.example.sequeniatest.data.mapper.GenresMapper
+import com.example.sequeniatest.data.network.ApiFactory
 import com.example.sequeniatest.domain.Film
 import com.example.sequeniatest.domain.FilmRepository
 import com.example.sequeniatest.domain.Genre
@@ -55,7 +54,7 @@ object FilmRepositoryImpl : FilmRepository{
     }
 
     override suspend fun loadFilms() {
-        try {
+
             val filmsDto = retrofit.loadMovies()
             filmList = filmMapper
                 .filmListDtoToFilmListEntity(filmsDto)
@@ -63,9 +62,7 @@ object FilmRepositoryImpl : FilmRepository{
             filmListLD.value = filmList
             genres = genresMapper.getGenresFromFilmList(filmList)
             genresLD.value = genres
-        }catch (e: Exception){
-            Log.d("FilmRepositoryImpl", e.message.toString())
-        }
+
     }
 
 
