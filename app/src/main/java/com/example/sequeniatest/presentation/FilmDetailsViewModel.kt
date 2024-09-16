@@ -7,7 +7,7 @@ import com.example.sequeniatest.domain.GetFilmUseCase
 
 class FilmDetailsViewModel : ViewModel() {
 
-    private val repository = FilmRepositoryImpl
+    private val repository = FilmRepositoryImpl()
 
     private val getFilmUseCase = GetFilmUseCase(repository)
 
