@@ -5,13 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.sequeniatest.data.mapper.FilmMapper
 import com.example.sequeniatest.data.mapper.GenresMapper
 import com.example.sequeniatest.data.network.ApiFactory
+import com.example.sequeniatest.data.network.ApiService
 import com.example.sequeniatest.domain.Film
 import com.example.sequeniatest.domain.FilmRepository
 import com.example.sequeniatest.domain.Genre
 
-class FilmRepositoryImpl : FilmRepository{
-
-    private val retrofit = ApiFactory.apiService
+class FilmRepositoryImpl (private val apiService: ApiService): FilmRepository{
 
     private val _filmListLD = MutableLiveData<List<Film>>()
     val filmListLD: LiveData<List<Film>>
@@ -57,7 +56,7 @@ class FilmRepositoryImpl : FilmRepository{
 
     override suspend fun loadFilms() {
 
-            val filmsDto = retrofit.loadMovies()
+            val filmsDto = apiService.loadMovies()
             filmList = filmMapper
                 .filmListDtoToFilmListEntity(filmsDto)
                 .sortedBy { it.localizedName }

@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.sequeniatest.R
 import com.example.sequeniatest.databinding.FragmentFilmDetailsBinding
 import com.example.sequeniatest.domain.Film
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FilmDetailsFragment : Fragment() {
 
@@ -18,9 +18,7 @@ class FilmDetailsFragment : Fragment() {
         FragmentFilmDetailsBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: FilmDetailsViewModel by lazy {
-        ViewModelProvider(this)[FilmDetailsViewModel::class.java]
-    }
+    private val viewModel: FilmDetailsViewModel by viewModel<FilmDetailsViewModel> ()
 
     private var filmId: Int = ID_ERROR
     private lateinit var film: Film

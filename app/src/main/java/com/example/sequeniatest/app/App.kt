@@ -1,9 +1,10 @@
 package com.example.sequeniatest.app
 
 import android.app.Application
-import com.example.sequeniatest.di.appModule
+import com.example.sequeniatest.di.presentationModule
 import com.example.sequeniatest.di.dataModule
 import com.example.sequeniatest.di.domainModule
+import com.example.sequeniatest.di.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +19,7 @@ class App : Application() {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
             modules(listOf(
-                appModule,
+                presentationModule,
                 domainModule,
                 dataModule
             ))
