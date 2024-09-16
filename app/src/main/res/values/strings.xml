@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SequeniaTest</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="film_poster">Постер к фильму</string>
+    <string name="genres_title">Жанры</string>
+    <string name="films_title">Фильмы</string>
+    <string name="get_film_error">Не удалось найти информацию о фильме</string>
+    <string name="string_rating_source">Кинопоиск</string>
+    <string name="button_back_content_description">Button back</string>
+    <string name="string_network_error">Ошибка подключения сети</string>
+    <string name="string_try_again">Повторить</string>
+</resources>
