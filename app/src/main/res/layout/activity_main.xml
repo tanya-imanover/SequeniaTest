@@ -31,9 +31,12 @@
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="24dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 tools:text="Фильмы" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
